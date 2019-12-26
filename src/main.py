@@ -28,6 +28,11 @@ clock = pygame.time.Clock()
 endDispFont = pygame.font.SysFont("helvetica")
 
 
+def lvl(score, bomb_speed):
+    if score < 20:
+        bomb_speed = 3
+
+
 def drop_bombs(bomb_list):
     randomize_fall = random.random()
     if len(bomb_list) < 10 and randomize_fall < 0.2:
