@@ -17,8 +17,7 @@ player_pos = [width/2, height-2*50]
 bomb_pos = [random.randint(0, width-50), 0]
 bomb_list = [bomb_pos]
 
-score, bomb_speed = 0, 2
-bomb_speed = gm_deps.lvl(score, bomb_speed)
+score, bomb_speed = 0, 1
 
 screen = pygame.display.set_mode((width, height))
 
@@ -26,7 +25,7 @@ gm_over = False
 
 clock = pygame.time.Clock()
 
-endDispFont = pygame.font.SysFont("comicsansms", 72)
+endDispFont = pygame.font.SysFont("comicsansms", 21)
 
 
 while not gm_over:
@@ -46,16 +45,18 @@ while not gm_over:
 
     screen.fill((0, 0, 0))
 
-    if gm_deps.hit_by_bomb(player_pos, bomb_pos):
+    if gm_deps.hit_by_bomb_fr_sqr(player_pos, bomb_pos):
         gm_over = True
         break
 
     gm_deps.drop_bombs(bomb_list, width)
-    score = gm_deps.bomb_pos_inc(bomb_list, score, height, bomb_speed)
+    score = gm_deps.bomb_pos_increment(bomb_list, score, height, bomb_speed)
+
+    bomb_speed = gm_deps.lvl(score, bomb_speed)
 
     text = "Score: " + str(score)
     lbl = endDispFont.render(text, 1, (255, 134, 0))
-    screen.blit(lbl, (width-250, height-50))
+    screen.blit(lbl, (width-100, height-20))
 
     if gm_deps.hit_check(player_pos, bomb_list):
         gm_over = True
