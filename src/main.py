@@ -17,15 +17,20 @@ bomb_pos = [random.randint(0, width-50), 0]
 bomb_list = [bomb_pos]
 bomb_speed = 9
 
+score = 0
+
 screen = pygame.display.set_mode((width, height))
 
 gm_over = False
 
 clock = pygame.time.Clock()
 
+endDispFont = pygame.font.SysFont("helvetica")
+
 
 def drop_bombs(bomb_list):
-    if len(bomb_list) < 10:
+    randomize_fall = random.random()
+    if len(bomb_list) < 10 and randomize_fall < 0.2:
         x_pos = random.randint(0, width-50)
         y_pos = 0
         bomb_list.append([x_pos, y_pos])
@@ -36,12 +41,14 @@ def draw_bombs(bomb_list):
         pygame.draw.rect(screen, (0, 0, 255), (bomb_pos[0], bomb_pos[1], 50, 50))
 
 
-def bomb_pos_inc(bomb_list):
+def bomb_pos_inc(bomb_list, scr):
     for index, bomb_pos in enumerate(bomb_list):
         if 0 <= bomb_pos[1] < height:
             bomb_pos[1] += bomb_speed
         else:
             bomb_list.pop(index)
+            scr += 1
+    return scr
 
 
 def hit_check(player_pos, bomb_list):
@@ -83,7 +90,11 @@ while not gm_over:
         break
 
     drop_bombs(bomb_list)
-    bomb_pos_inc(bomb_list)
+    score = bomb_pos_inc(bomb_list, score)
+
+    text = f"Score: {str(score)}"
+    lbl = endDispFont.render(text, 1, (255, 134, 0))
+    screen.blit(lbl, (width-250, height-50))
 
     if hit_check(player_pos, bomb_list):
         gm_over = True
