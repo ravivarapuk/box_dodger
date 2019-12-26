@@ -1,6 +1,7 @@
 import random
 import pygame
 import sys
+import game_dependencies as gm_deps
 
 pygame.init()
 
@@ -15,9 +16,9 @@ player_pos = [width/2, height-2*50]
 
 bomb_pos = [random.randint(0, width-50), 0]
 bomb_list = [bomb_pos]
-bomb_speed = 9
 
-score = 0
+score, bomb_speed = 0, 2
+bomb_speed = gm_deps.lvl(score, bomb_speed)
 
 screen = pygame.display.set_mode((width, height))
 
@@ -25,52 +26,7 @@ gm_over = False
 
 clock = pygame.time.Clock()
 
-endDispFont = pygame.font.SysFont("helvetica")
-
-
-def lvl(score, bomb_speed):
-    if score < 20:
-        bomb_speed = 3
-
-
-def drop_bombs(bomb_list):
-    randomize_fall = random.random()
-    if len(bomb_list) < 10 and randomize_fall < 0.2:
-        x_pos = random.randint(0, width-50)
-        y_pos = 0
-        bomb_list.append([x_pos, y_pos])
-
-
-def draw_bombs(bomb_list):
-    for bomb_pos in bomb_list:
-        pygame.draw.rect(screen, (0, 0, 255), (bomb_pos[0], bomb_pos[1], 50, 50))
-
-
-def bomb_pos_inc(bomb_list, scr):
-    for index, bomb_pos in enumerate(bomb_list):
-        if 0 <= bomb_pos[1] < height:
-            bomb_pos[1] += bomb_speed
-        else:
-            bomb_list.pop(index)
-            scr += 1
-    return scr
-
-
-def hit_check(player_pos, bomb_list):
-    for bomb_pos in bomb_list:
-        if hit_by_bomb(player_pos, bomb_list):
-            return True
-    return False
-
-
-def hit_by_bomb(p_pos, b_pos):
-    p_x, p_y = p_pos[0], p_pos[1]
-    b_x, b_y = b_pos[0], b_pos[1]
-
-    if (b_x >= p_x and b_x < (p_x + 50)) or (p_x >= b_x and p_x < (b_x + 50)):
-        if (b_y >= p_y and b_y < (p_y + 50)) or (p_y >= b_y and p_y < (b_y + 50)):
-            return True
-    return False
+endDispFont = pygame.font.SysFont("comicsansms", 72)
 
 
 while not gm_over:
@@ -90,22 +46,22 @@ while not gm_over:
 
     screen.fill((0, 0, 0))
 
-    if hit_by_bomb(player_pos, bomb_pos):
+    if gm_deps.hit_by_bomb(player_pos, bomb_pos):
         gm_over = True
         break
 
-    drop_bombs(bomb_list)
-    score = bomb_pos_inc(bomb_list, score)
+    gm_deps.drop_bombs(bomb_list, width)
+    score = gm_deps.bomb_pos_inc(bomb_list, score, height, bomb_speed)
 
-    text = f"Score: {str(score)}"
+    text = "Score: " + str(score)
     lbl = endDispFont.render(text, 1, (255, 134, 0))
     screen.blit(lbl, (width-250, height-50))
 
-    if hit_check(player_pos, bomb_list):
+    if gm_deps.hit_check(player_pos, bomb_list):
         gm_over = True
         break
 
-    draw_bombs(bomb_list)
+    gm_deps.draw_bombs(bomb_list, screen)
 
     pygame.draw.rect(screen, (255, 0, 0), (player_pos[0], player_pos[1], 50, 50))
 
