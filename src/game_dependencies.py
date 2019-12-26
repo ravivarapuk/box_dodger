@@ -4,11 +4,18 @@ import math
 
 
 def lvl(score, bomb_speed):
+    """
+    This Function sets the speed of the bomb based upon the range in which the score lies. As the score increments 
+    into the next 10th multiple the speed gets increasd by the dividend of the score divided by 10
+    """
     bomb_speed = 1 + int(math.floor(score/10))
     return bomb_speed
 
 
 def drop_bombs(bomb_list, width):
+    """
+    This function places the bombs at random positions on the x axis while the y is always at 0 which is the top.
+    """
     randomize_fall = random.random()
     if len(bomb_list) < 10 and randomize_fall < 0.2:
         x_pos = random.randint(0, width-50)
@@ -17,6 +24,9 @@ def drop_bombs(bomb_list, width):
 
 
 def draw_bombs(bomb_list, screen):
+    """
+    This Function draws bombs using the positions populated in the bomb_list which is a list of independent bomb objects.
+    """
     for bomb_pos in bomb_list:
         pygame.draw.rect(screen, (0, 0, 255), (bomb_pos[0], bomb_pos[1], 50, 50))
 
