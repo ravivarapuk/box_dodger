@@ -1,17 +1,10 @@
 import random
 import pygame
+import math
 
 
 def lvl(score, bomb_speed):
-    if score < 10:
-        bomb_speed = 3
-    elif score < 20:
-        bomb_speed += 1
-    elif score < 30:
-        bomb_speed += 1
-    elif score < 40:
-        bomb_speed += 1
-
+    bomb_speed = 1 + int(math.floor(score/10))
     return bomb_speed
 
 
@@ -28,7 +21,7 @@ def draw_bombs(bomb_list, screen):
         pygame.draw.rect(screen, (0, 0, 255), (bomb_pos[0], bomb_pos[1], 50, 50))
 
 
-def bomb_pos_inc(bomb_list, scr, height, bomb_speed):
+def bomb_pos_increment(bomb_list, scr, height, bomb_speed):
     for index, bomb_pos in enumerate(bomb_list):
         if 0 <= bomb_pos[1] < height:
             bomb_pos[1] += bomb_speed
@@ -40,12 +33,12 @@ def bomb_pos_inc(bomb_list, scr, height, bomb_speed):
 
 def hit_check(player_pos, bomb_list):
     for bomb_pos in bomb_list:
-        if hit_by_bomb(player_pos, bomb_pos):
+        if hit_by_bomb_fr_sqr(player_pos, bomb_pos):
             return True
     return False
 
 
-def hit_by_bomb(p_pos, b_pos):
+def hit_by_bomb_fr_sqr(p_pos, b_pos):
     p_x, p_y = p_pos[0], p_pos[1]
     b_x, b_y = b_pos[0], b_pos[1]
 
