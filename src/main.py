@@ -5,15 +5,15 @@ import game_dependencies as gm_deps
 
 pygame.init()
 
+
 if len(sys.argv) > 1:
-    width = int(sys.argv[1])
-    height = int(sys.argv[1])
+    width, height = int(sys.argv[1]), int(sys.argv[2])
 else:
-    width = 600
-    height = 500
+    width, height = 650, 650
 
-player_pos = [width/2, height-50]
 
+player_pos = [width/2, height-60]
+player_size, bomb_size = 40, 20
 bomb_pos = [random.randint(0, width-50), 0]
 bomb_list = [bomb_pos]
 
@@ -36,10 +36,12 @@ while not gm_over:
         if event.type == pygame.KEYDOWN:
             x, y = player_pos[0], player_pos[1]
 
-            if event.key == pygame.K_LEFT:
-                x -= 50
-            elif event.key == pygame.K_RIGHT:
-                x += 50
+            if (event.key == pygame.K_LEFT) and x!= 0:
+                x -= player_size
+                print('Left Move', x)
+            elif (event.key == pygame.K_RIGHT) and x!= (width-50):
+                x += player_size
+                print('Right Move', x)
 
             player_pos = [x, y]
 
@@ -49,7 +51,7 @@ while not gm_over:
         gm_over = True
         break
 
-    gm_deps.drop_bombs(bomb_list, width)
+    gm_deps.drop_bombs(score, bomb_list, width)
     score = gm_deps.bomb_pos_increment(bomb_list, score, height, bomb_speed)
 
     bomb_speed = gm_deps.lvl(score, bomb_speed)
@@ -62,9 +64,9 @@ while not gm_over:
         gm_over = True
         break
 
-    gm_deps.draw_bombs(bomb_list, screen)
+    gm_deps.draw_bombs(bomb_list, screen, bomb_size)
 
-    pygame.draw.rect(screen, (255, 255, 255), (player_pos[0], player_pos[1], 50, 50))
+    pygame.draw.rect(screen, (255, 255, 255), (player_pos[0], player_pos[1], player_size, player_size))
 
     clock.tick(30)
 
