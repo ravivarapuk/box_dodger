@@ -53,8 +53,8 @@ def hit_by_bomb_fr_sqr(p_pos, b_pos, player_size):
     p_x, p_y = p_pos[0], p_pos[1]
     b_x, b_y = b_pos[0], b_pos[1]
 
-    if (b_x >= p_x and b_x < (p_x + player_size)) or (p_x >= b_x and p_x < (b_x + player_size)):
-        if (b_y >= p_y and b_y < (p_y + player_size)) or (p_y >= b_y and p_y < (b_y + player_size)):
+    if (p_x <= b_x < (p_x + player_size)) or (b_x <= p_x < (b_x + player_size)):
+        if (p_y <= b_y < (p_y + player_size)) or (b_y <= p_y < (b_y + player_size)):
             return True
 
     return False
