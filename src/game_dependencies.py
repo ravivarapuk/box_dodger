@@ -12,7 +12,10 @@ def lvl(score, bomb_speed):
 
 
 def set_number_of_bombs(score):
-    return 3 + int(math.floor(score/50))
+    if score < 71:
+        return 3 + int(math.floor(score/50))
+    else:
+        return 13
 
 
 def drop_bombs(score, bomb_list, width):
@@ -39,19 +42,19 @@ def bomb_pos_increment(bomb_list, scr, height, bomb_speed):
     return scr
 
 
-def hit_check(player_pos, bomb_list):
+def hit_check(player_pos, bomb_list, player_size):
     for bomb_pos in bomb_list:
-        if hit_by_bomb_fr_sqr(player_pos, bomb_pos):
+        if hit_by_bomb_fr_sqr(player_pos, bomb_pos, player_size):
             return True
     return False
 
 
-def hit_by_bomb_fr_sqr(p_pos, b_pos):
+def hit_by_bomb_fr_sqr(p_pos, b_pos, player_size):
     p_x, p_y = p_pos[0], p_pos[1]
     b_x, b_y = b_pos[0], b_pos[1]
 
-    if (b_x >= p_x and b_x < (p_x + 50)) or (p_x >= b_x and p_x < (b_x + 50)):
-        if (b_y >= p_y and b_y < (p_y + 50)) or (p_y >= b_y and p_y < (b_y + 50)):
+    if (b_x >= p_x and b_x < (p_x + player_size)) or (p_x >= b_x and p_x < (b_x + player_size)):
+        if (b_y >= p_y and b_y < (p_y + player_size)) or (p_y >= b_y and p_y < (b_y + player_size)):
             return True
 
     return False

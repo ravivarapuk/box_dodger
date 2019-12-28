@@ -9,12 +9,12 @@ pygame.init()
 if len(sys.argv) > 1:
     width, height = int(sys.argv[1]), int(sys.argv[2])
 else:
-    width, height = 650, 650
+    width, height = 800, 650
 
 
 player_pos = [width/2, height-60]
-player_size, bomb_size = 40, 20
-bomb_pos = [random.randint(0, width-50), 0]
+player_size, bomb_size = 50, 50
+bomb_pos = [random.randint(0, width-bomb_size), 0]
 bomb_list = [bomb_pos]
 
 score, bomb_speed = 0, 1
@@ -36,18 +36,17 @@ while not gm_over:
         if event.type == pygame.KEYDOWN:
             x, y = player_pos[0], player_pos[1]
 
-            if (event.key == pygame.K_LEFT) and x!= 0:
+            if (event.key == pygame.K_LEFT) and x != 0:
                 x -= player_size
-                print('Left Move', x)
-            elif (event.key == pygame.K_RIGHT) and x!= (width-50):
+
+            elif (event.key == pygame.K_RIGHT) and x != (width-bomb_size):
                 x += player_size
-                print('Right Move', x)
 
             player_pos = [x, y]
 
     screen.fill((20, 154, 131))
 
-    if gm_deps.hit_by_bomb_fr_sqr(player_pos, bomb_pos):
+    if gm_deps.hit_by_bomb_fr_sqr(player_pos, bomb_pos, player_size):
         gm_over = True
         break
 
@@ -60,7 +59,7 @@ while not gm_over:
     lbl = endDispFont.render(text, 1, (0, 0, 0))
     screen.blit(lbl, (width-130, height-25))
 
-    if gm_deps.hit_check(player_pos, bomb_list):
+    if gm_deps.hit_check(player_pos, bomb_list, player_size):
         gm_over = True
         break
 
