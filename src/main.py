@@ -9,7 +9,7 @@ pygame.init()
 if len(sys.argv) > 1:
     width, height = int(sys.argv[1]), int(sys.argv[2])
 else:
-    width, height = 400, 350
+    width, height = 800, 700
 
 
 player_pos = [width/2, height-60]

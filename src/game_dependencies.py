@@ -4,6 +4,9 @@ import math
 
 
 def lvl(score, bomb_speed):
+    """
+    Defines the level(bomb_speed) corresponding to the score
+    """
     if score < 300:
         bomb_speed = 2 + int(math.floor(score/20))
     else:
@@ -12,13 +15,19 @@ def lvl(score, bomb_speed):
 
 
 def set_number_of_bombs(score):
-    if score < 71:
-        return 3 + int(math.floor(score/50))
+    """
+    Sets the number of bombs being gnerated as per the score of the player
+    """
+    if score < 101:
+        return 3 + int(math.floor(score/10))
     else:
-        return 13
+        return 14
 
 
 def drop_bombs(score, bomb_list, width):
+    """
+    Generates a bomb list w.r.t the score of the player
+    """
     randomize_fall = random.random()
     N = int(set_number_of_bombs(score))
     if len(bomb_list) < N and randomize_fall < 0.3:
@@ -28,6 +37,9 @@ def drop_bombs(score, bomb_list, width):
 
 
 def draw_bombs(bomb_list, screen, bomb_size):
+    """
+    Draws/generates bombs on the canvas from top
+    """
     for bomb_pos in bomb_list:
         pygame.draw.rect(screen, (204, 68, 0), (bomb_pos[0], bomb_pos[1], bomb_size, bomb_size))
 
