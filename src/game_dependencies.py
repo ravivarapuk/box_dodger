@@ -45,6 +45,9 @@ def draw_bombs(bomb_list, screen, bomb_size):
 
 
 def bomb_pos_increment(bomb_list, scr, height, bomb_speed):
+    """
+    Increments the position of the bomb (draws the bomb at new incremented co-ordinates
+    """
     for index, bomb_pos in enumerate(bomb_list):
         if 0 <= bomb_pos[1] < height:
             bomb_pos[1] += bomb_speed
@@ -55,6 +58,9 @@ def bomb_pos_increment(bomb_list, scr, height, bomb_speed):
 
 
 def hit_check(player_pos, bomb_list, player_size):
+    """
+    To check if the bomb and the ship position overlaps
+    """
     for bomb_pos in bomb_list:
         if hit_by_bomb_fr_sqr(player_pos, bomb_pos, player_size):
             return True
@@ -62,6 +68,9 @@ def hit_check(player_pos, bomb_list, player_size):
 
 
 def hit_by_bomb_fr_sqr(p_pos, b_pos, player_size):
+    """
+    To check if the bomb was hit by square
+    """
     p_x, p_y = p_pos[0], p_pos[1]
     b_x, b_y = b_pos[0], b_pos[1]
 
